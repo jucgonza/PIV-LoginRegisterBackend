@@ -4,6 +4,14 @@ const bcrypt = require("bcryptjs");
 
 const register = async (req, res) => {
   try {
+
+    if(!req.body.email || !req.body.password || !req.body.username || !req.body.documentNumber){
+      return res.status(401).json({
+        message: "Todos los campos del formulario son requeridos.",
+        status: "error",
+      });
+    }
+
     const { username, email, password, documentNumber } = req.body;
 
     // Verificar si el usuario ya existe
@@ -55,6 +63,13 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   try {
+    if(!req.body.email || !req.body.password){
+      return res.status(401).json({
+        message: "Email y contraseña requeridos",
+        status: "error",
+      });
+    }
+
     const { email, password } = req.body;
 
     const user = await User.findOne({
